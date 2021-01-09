@@ -1,0 +1,14 @@
+version: '2'
+services:
+  database:
+    image: library/mysql:5.7.31
+    container_name: mysql
+    restart: always
+    ports:
+      - '33060:3306'
+    environment:
+      MYSQL_DATABASE: todos
+      MYSQL_USER: todo
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      TZ: Asia/Seoul

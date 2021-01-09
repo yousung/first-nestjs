@@ -1,23 +1,32 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { Todo } from './todos.entity';
 import { TodosService } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
   constructor(readonly todoService: TodosService) {}
+
   @Get('/')
   index(): Todo[] {
     return this.todoService.idex();
   }
 
   @Get(':id')
-  show(): Todo {
-    return this.todoService.show();
+  show(@Param(':id') id: number): Todo {
+    return this.todoService.show(id);
   }
 
   @Post()
-  store(): Todo {
-    return this.todoService.store();
+  store(@Body() todoBody): Todo {
+    return this.todoService.store(todoBody);
   }
 
   @Patch(':id')
