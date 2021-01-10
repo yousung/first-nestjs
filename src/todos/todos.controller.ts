@@ -15,27 +15,27 @@ export class TodosController {
   constructor(readonly todoService: TodosService) {}
 
   @Get('/')
-  index(): Todo[] {
+  index(): Promise<Todo[]> {
     return this.todoService.idex();
   }
 
   @Get(':id')
-  show(@Param(':id') id: number): Todo {
+  show(@Param(':id') id: number): Promise<Todo> {
     return this.todoService.show(id);
   }
 
-  @Post()
-  store(@Body() todoBody): Todo {
-    return this.todoService.store(todoBody);
-  }
+  // @Post()
+  // store(@Body() todoBody): Todo {
+  //   return this.todoService.store(todoBody);
+  // }
 
-  @Patch(':id')
-  update(): Todo {
-    return this.todoService.update();
-  }
+  // @Patch(':id')
+  // update(): Todo {
+  //   return this.todoService.update();
+  // }
 
   @Delete(':id')
-  destroy(): null {
-    return this.todoService.delete();
+  destroy(@Param(':id') id: number): any {
+    return this.todoService.delete(id);
   }
 }

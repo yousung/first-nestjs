@@ -1,14 +1,29 @@
-version: '2'
+version: '3.6'
+
+networks:
+  nest-blog:
+
 services:
   database:
-    image: mysql
-    container_name: mysql
-    restart: always
+    container_name: todo-mysql
+    image: mysql:8.0.22
+    restart: unless-stopped
     ports:
-      - '33060:3306'
+      - '3307:3306'
+    volumes:
+      - ./docker/db/conf.d/:/etc/mysql/conf.d/
     environment:
       MYSQL_DATABASE: todos
       MYSQL_USER: todo
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret
       TZ: Asia/Seoul
+    networks:
+      - nest-blog
+
+  redis:
+    container_name: todo-redis
+    image: redis
+    restart: unless-stopped
+    networks:
+      - nest-blog

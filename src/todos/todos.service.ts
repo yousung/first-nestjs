@@ -1,50 +1,35 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { State, Todo } from './todos.entity';
 
 @Injectable()
 export class TodosService {
-  readonly todos: Todo[] = [];
-  todoId: number;
+  constructor(
+    @InjectRepository(Todo)
+    private todoRepository: Repository<Todo>,
+  ) {}
 
   // 모든 상품
-  idex(): Todo[] {
-    return this.todos;
+  idex(): Promise<Todo[]> {
+    return this.todoRepository.find();
   }
 
   // 상품 디테일
-  show(id: number): Todo {
-    const index = this.getTodo(id);
-    return this.todos[index];
+  show(id: number): Promise<Todo> {
+    return this.todoRepository.findOne(id);
   }
 
   // 상품 등록
-  store(todoData): Todo {
-    const todo = {
-      id: this.todoId++,
-      title: todoData.title,
-      context: todoData.context,
-      state: State.READY,
-    };
-    this.todos.push(todo);
+  // store(todoData): Promise<Todo> {
+  //   return this.todoRepository.create(todoData);
+  // }
 
-    return todo;
-  }
+  // update(): Todo {
+  //   return null;
+  // }
 
-  update(): Todo {
-    return null;
-  }
-
-  delete(): null {
-    return null;
-  }
-
-  getTodo(id: number): number {
-    const index = this.todos.findIndex((todo) => todo.id === id);
-
-    if (!index) {
-      throw new NotFoundException('not found todo');
-    }
-
-    return index;
+  delete(id: number): any {
+    return this.todoRepository.delete(id);
   }
 }
